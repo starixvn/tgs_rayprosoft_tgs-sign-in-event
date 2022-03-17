@@ -97,7 +97,7 @@ pipeline {
                         sh """
                             cat << EOF | yq e -P | helm template deployment/k8s/sign-in \
                                 -n ${kube_ns} \
-                                --name-template Tgs \
+                                --name-template tgs \
                                 --set image.tag=${TAG} \
                                 -f -
                             {
@@ -109,7 +109,7 @@ pipeline {
                         sh """
                             cat << EOF | yq e -P | helm template deployment/k8s/sign-in \
                                 -n ${kube_ns} \
-                                --name-template Tgs \
+                                --name-template tgs \
                                 --set image.tag=${TAG} \
                                 -f - \
                                 | kubectl -n ${kube_ns} apply -f -
