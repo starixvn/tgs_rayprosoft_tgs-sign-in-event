@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+option csharp_namespace = "SignInEventService.Protos";
+
+import "google/protobuf/timestamp.proto";
+import "phoenix/protobuf/guid.proto";
+
+message SignInRequest {
+	string player_code = 1;
+	google.protobuf.Timestamp date = 2;
+}
+
+message SignInResponse {
+	phoenix.protobuf.GuidValue id = 1;
+	int32 combo = 2;
+}
