@@ -29,7 +29,7 @@ pipeline {
                             env.k8s_config = 'k8s-kube-config' 
                             break;
                     }
-                }
+
                     env.TAG = sh(script: "echo `date +%Y%m%d%H%M`", returnStdout: true).trim() + '-' + env.kube_ns;
                     message += "\nBranch: ${env.GIT_BRANCH}" 
                     message += "\nTag: ${env.TAG}"
@@ -37,6 +37,7 @@ pipeline {
                     env.commit_url = "${env.GIT_URL}".replace("git@gitlab.com:","https://gitlab.com/").replace(".git","/-/commit/") + "${env.GIT_COMMIT}"
                     message += "\n Commit: ${env.commit_url}"
                 }
+                    
                 sh "echo tag: $TAG"
             }
         }
