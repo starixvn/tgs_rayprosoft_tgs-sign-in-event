@@ -18,12 +18,16 @@ public class SignInTests
 
 		var sut = new SignInCommandService(fakeTgsRepository);
 
-		var command = new SignInCommand("player1", DateOnly.FromDateTime(DateTime.Now));
+		var command = new SignInCommand(
+			Guid.NewGuid(),
+			"player1",
+			DateOnly.FromDateTime(DateTime.Now));
 
 		await sut.ExecuteAsync(command);
 
 		_ = fakeTgsRepository.Received(1)
 			.SignInAsync(
+				Arg.Is(command.PromotionId),
 				Arg.Is(command.PlayerCode),
 				Arg.Is(command.Date),
 				Arg.Is(1),
@@ -37,9 +41,13 @@ public class SignInTests
 
 		var sut = new SignInCommandService(fakeTgsRepository);
 
-		var command = new SignInCommand("player1", DateOnly.FromDateTime(DateTime.Now));
+		var command = new SignInCommand(
+			Guid.NewGuid(),
+			"player1",
+			DateOnly.FromDateTime(DateTime.Now));
 
 		_ = fakeTgsRepository.GetSignInRecordAsync(
+			Arg.Is(command.PromotionId),
 			Arg.Is(command.PlayerCode),
 			Arg.Is(command.Date.AddDays(-1)),
 			Arg.Any<CancellationToken>())
@@ -53,6 +61,7 @@ public class SignInTests
 
 		_ = fakeTgsRepository.Received(1)
 			.SignInAsync(
+				Arg.Is(command.PromotionId),
 				Arg.Is(command.PlayerCode),
 				Arg.Is(command.Date),
 				Arg.Is(3),
@@ -66,9 +75,13 @@ public class SignInTests
 
 		var sut = new SignInCommandService(fakeTgsRepository);
 
-		var command = new SignInCommand("player1", DateOnly.FromDateTime(DateTime.Now));
+		var command = new SignInCommand(
+			Guid.NewGuid(),
+			"player1",
+			DateOnly.FromDateTime(DateTime.Now));
 
 		_ = fakeTgsRepository.GetSignInRecordAsync(
+			Arg.Is(command.PromotionId),
 			Arg.Is(command.PlayerCode),
 			Arg.Is(command.Date),
 			Arg.Any<CancellationToken>())
@@ -82,6 +95,7 @@ public class SignInTests
 
 		_ = fakeTgsRepository.Received(0)
 			.SignInAsync(
+				Arg.Is(command.PromotionId),
 				Arg.Any<string>(),
 				Arg.Any<DateOnly>(),
 				Arg.Any<int>(),
@@ -95,10 +109,14 @@ public class SignInTests
 
 		var sut = new GetSignInRecordQueryService(fakeTgsRepository);
 
-		var query = new GetSignInRecordQuery("player1", DateOnly.FromDateTime(DateTime.Now));
+		var query = new GetSignInRecordQuery(
+			Guid.NewGuid(),
+			"player1",
+			DateOnly.FromDateTime(DateTime.Now));
 
 		var signInRecord = new SignInRecord(Guid.NewGuid(), query.PlayerCode, query.Date, 1);
 		_ = fakeTgsRepository.GetSignInRecordAsync(
+			Arg.Is(query.PromotionId),
 			Arg.Is(query.PlayerCode),
 			Arg.Is(query.Date),
 			Arg.Any<CancellationToken>())
@@ -116,7 +134,10 @@ public class SignInTests
 
 		var sut = new GetSignInRecordQueryService(fakeTgsRepository);
 
-		var query = new GetSignInRecordQuery("player1", DateOnly.FromDateTime(DateTime.Now));
+		var query = new GetSignInRecordQuery(
+			Guid.NewGuid(),
+			"player1",
+			DateOnly.FromDateTime(DateTime.Now));
 
 		var actual = await sut.GetAsync(query);
 

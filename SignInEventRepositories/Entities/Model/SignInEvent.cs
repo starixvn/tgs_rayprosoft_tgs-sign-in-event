@@ -13,5 +13,6 @@ namespace Tgs.SignInEvents.Entities
         public DateOnly Date { get; set; }
         public string PlayerCode { get; set; } = null!;
         public int Combo { get; set; }
+        public Guid PromotionId { get; set; }
     }
 }

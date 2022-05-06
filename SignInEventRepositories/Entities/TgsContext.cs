@@ -24,7 +24,8 @@ namespace Tgs.SignInEvents.Entities
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasPostgresExtension("pg_trgm");
+            modelBuilder.HasPostgresExtension("ltree")
+                .HasPostgresExtension("pg_trgm");
 
             modelBuilder.ApplyConfiguration(new Configurations.PlayerConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.SignInEventConfiguration());

@@ -14,6 +14,7 @@ public class SignInCommandService : ICommandService<SignInCommand>
 	public async ValueTask ExecuteAsync(SignInCommand command, CancellationToken cancellationToken = default)
 	{
 		var currentRecord = await _tgsRepository.GetSignInRecordAsync(
+			command.PromotionId,
 			command.PlayerCode,
 			command.Date,
 			cancellationToken).ConfigureAwait(false);
@@ -23,6 +24,7 @@ public class SignInCommandService : ICommandService<SignInCommand>
 
 		var yesterday = command.Date.AddDays(-1);
 		var yesterdayRecord = await _tgsRepository.GetSignInRecordAsync(
+			command.PromotionId,
 			command.PlayerCode,
 			yesterday,
 			cancellationToken).ConfigureAwait(false);
@@ -32,6 +34,7 @@ public class SignInCommandService : ICommandService<SignInCommand>
 			: yesterdayRecord.Combo + 1;
 
 		await _tgsRepository.SignInAsync(
+			command.PromotionId,
 			command.PlayerCode,
 			command.Date,
 			combo,

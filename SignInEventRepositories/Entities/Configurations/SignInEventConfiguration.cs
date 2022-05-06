@@ -20,6 +20,8 @@ namespace Tgs.SignInEvents.Entities.Configurations
 
             entity.HasIndex(e => e.PlayerCode, "ix_sign_in_events_player_code");
 
+            entity.HasIndex(e => e.PromotionId, "ix_sign_in_events_promotion_id");
+
             entity.Property(e => e.Id)
                 .ValueGeneratedNever()
                 .HasColumnName("id");
@@ -39,6 +41,8 @@ namespace Tgs.SignInEvents.Entities.Configurations
             entity.Property(e => e.PlayerCode)
                 .HasMaxLength(16)
                 .HasColumnName("player_code");
+
+            entity.Property(e => e.PromotionId).HasColumnName("promotion_id");
 
             OnConfigurePartial(entity);
         }

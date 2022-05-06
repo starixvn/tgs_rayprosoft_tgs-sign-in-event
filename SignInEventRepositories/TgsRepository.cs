@@ -16,12 +16,13 @@ internal class TgsRepository : ITgsRepository
 	}
 
 	public async ValueTask<SignInRecord?> GetSignInRecordAsync(
+		Guid promotionId,
 		string playerCode,
 		DateOnly date,
 		CancellationToken cancellationToken = default)
 	{
 		var record = await _tgsContext.SignInEvents
-			.Where(s => s.PlayerCode == playerCode && s.Date == date)
+			.Where(s => s.PromotionId == promotionId && s.PlayerCode == playerCode && s.Date == date)
 			.SingleOrDefaultAsync(cancellationToken: cancellationToken)
 			.ConfigureAwait(false);
 
@@ -30,7 +31,12 @@ internal class TgsRepository : ITgsRepository
 			: new SignInRecord(record.Id, record.PlayerCode, record.Date, record.Combo);
 	}
 
-	public async ValueTask SignInAsync(string playerCode, DateOnly date, int combo, CancellationToken cancellationToken = default)
+	public async ValueTask SignInAsync(
+		Guid promotionId,
+		string playerCode,
+		DateOnly date,
+		int combo,
+		CancellationToken cancellationToken = default)
 	{
 		var player = await _tgsContext.Players
 			.FindAsync(new object?[] { playerCode }, cancellationToken: cancellationToken)
@@ -47,15 +53,16 @@ internal class TgsRepository : ITgsRepository
 			Id = id,
 			PlayerCode = playerCode,
 			BrandId = player.BrandId,
+			PromotionId = promotionId,
 			Date = date,
 			Combo = combo
 		};
 
-		await _tgsContext.SignInEvents
+		_ = await _tgsContext.SignInEvents
 			.AddAsync(insertRecord, cancellationToken)
 			.ConfigureAwait(false);
 
-		await _tgsContext
+		_ = await _tgsContext
 			.SaveChangesAsync(cancellationToken)
 			.ConfigureAwait(false);
 	}

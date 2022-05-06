@@ -23,14 +23,17 @@ public class SignInQueryProcessor : IMessageProcessor
 
 		var signRecord = await _getSignInRecordService.GetAsync(
 			new GetSignInRecordQuery(
+				request.PromotionId,
 				request.PlayerCode,
-				DateOnly.FromDateTime(request.Date.ToDateTimeOffset().ToOffset(TimeSpan.FromHours(8)).Date)),
+				request.Date),
 			cancellationToken).ConfigureAwait(false);
 
-		return new SignInResponse
-		{
-			Id = signRecord?.Id,
-			Combo = signRecord?.Combo ?? -1
-		}.ToByteArray();
+		return signRecord is null
+			? null
+			: new SignInResponse
+			{
+				Id = signRecord?.Id,
+				Combo = signRecord?.Combo ?? -1
+			}.ToByteArray();
 	}
 }

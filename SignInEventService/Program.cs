@@ -23,14 +23,13 @@ builder.Logging
 		});
 	});
 
-
 builder.Services
 	.AddSignInEvents()
 	.AddSignInEventRepositories((sp, dbBuilder) =>
 	{
 		var config = sp.GetRequiredService<IConfiguration>();
 
-		dbBuilder.UseNpgsql(config.GetConnectionString("Tgs"));
+		_ = dbBuilder.UseNpgsql(config.GetConnectionString("Tgs"));
 	})
 	.AddMessageQueue()
 	.AddNatsMessageQueue(natsConfiguration => natsConfiguration
@@ -67,20 +66,15 @@ builder.Services
 		.AddProfileViewExporter()
 		.AddOtlpExporter())
 	.AddProfileViewer()
-	.Configure<AspNetCoreInstrumentationOptions>(options =>
-	{
-		options.Filter = httpContext =>
-		{
-			return !httpContext.Request.Path.HasValue
+	.Configure<AspNetCoreInstrumentationOptions>(
+		options => options.Filter = httpContext
+			=> !httpContext.Request.Path.HasValue
 				|| !httpContext.Request.Path.StartsWithSegments("/swagger")
 				&& !httpContext.Request.Path.StartsWithSegments("/healthz")
 				&& !httpContext.Request.Path.StartsWithSegments("/profiler/")
 				&& !httpContext.Request.Path.StartsWithSegments("/metrics")
 				&& !new[] { "html", "ico", "png", "jpg" }.Any(
-					ext => httpContext.Request.Path.Value.EndsWith($".{ext}"));
-		};
-	});
-
+					ext => httpContext.Request.Path.Value.EndsWith($".{ext}")));
 
 builder.Services
 	.AddHealthChecks();

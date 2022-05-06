@@ -12,5 +12,9 @@ internal class GetSignInRecordQueryService : IGetService<GetSignInRecordQuery, S
 	}
 
 	public ValueTask<SignInRecord?> GetAsync(GetSignInRecordQuery query, CancellationToken cancellationToken = default)
-		=> _tgsRepository.GetSignInRecordAsync(query.PlayerCode, query.Date, cancellationToken);
+		=> _tgsRepository.GetSignInRecordAsync(
+			query.PromotionId,
+			query.PlayerCode,
+			query.Date,
+			cancellationToken);
 }

@@ -25,8 +25,9 @@ public class SignInProcessor : IMessageProcessor
 		var request = SignInRequest.Parser.ParseFrom(data.Span);
 
 		var command = new SignInCommand(
+			request.PromotionId,
 			request.PlayerCode,
-			DateOnly.FromDateTime(request.Date.ToDateTimeOffset().ToOffset(TimeSpan.FromHours(8)).Date));
+			request.Date);
 
 		await _signInService
 			.ExecuteAsync(command, cancellationToken)
@@ -34,6 +35,7 @@ public class SignInProcessor : IMessageProcessor
 
 		var signRecord = await _getSignInRecordService.GetAsync(
 			new GetSignInRecordQuery(
+				request.PromotionId,
 				request.PlayerCode,
 				command.Date),
 			cancellationToken).ConfigureAwait(false);

@@ -1,3 +1,3 @@
 ﻿namespace Tgs.SignInEvents.ApplicationServices;
 
-public record SignInCommand(string PlayerCode, DateOnly Date);
+public record SignInCommand(Guid PromotionId, string PlayerCode, DateOnly Date);
