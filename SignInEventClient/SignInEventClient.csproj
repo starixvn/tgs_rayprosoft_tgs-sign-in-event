@@ -5,6 +5,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <RootNamespace>Tgs.SignInEvents.Clients</RootNamespace>
+    <Version>0.0.1</Version>
+    <Authors>Raypro</Authors>
+    <PackageId>Tgs.SignInEventClient</PackageId>
+    <Product>Tgs.SignInEventClient</Product>
+    <PackageProjectUrl>https://gitlab.com/rayprosoft/tgs-sign-in-event</PackageProjectUrl>
+    <RepositoryUrl>https://gitlab.com/rayprosoft/tgs-sign-in-event.git</RepositoryUrl>
+    <PackageTags>Tgs SignIn</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

@@ -54,6 +54,13 @@ pipeline {
 			}
 		}
 
+        stage('Push packages') {
+			steps {
+				sh 'dotnet pack -c $BuildConfiguration "SignInEventClient/SignInEventClient.csproj" --no-build'
+				sh 'dotnet nuget push "SignInEventClient/bin/$BuildConfiguration/*.nupkg" -s "raypro-baget" -k admin --skip-duplicate'
+			}
+		}
+
 		stage('Build Docker Image') {
 			steps {
 				sh 'dotnet build "SignInEventService/SignInEventService.csproj" -c $BuildConfiguration -t:ContainerBuild -p:DockerfileTag="$ImageName:$TAG" --no-restore '
