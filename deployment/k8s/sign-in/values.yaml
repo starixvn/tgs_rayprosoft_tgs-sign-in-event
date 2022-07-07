@@ -5,13 +5,13 @@
 replicaCount: 1
 
 image:
-  repository: harbor.rpgp.cc/tgs/sign-in
+  repository: pgtgs/sign-in
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
 imagePullSecrets:
-  - name: secret-tgs-harbor
+  - name: dockerhub
 nameOverride: ""
 fullnameOverride: ""
 
